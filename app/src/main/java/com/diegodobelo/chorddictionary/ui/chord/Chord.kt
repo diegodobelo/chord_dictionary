@@ -159,6 +159,7 @@ fun GuitarArm() {
         modifier = Modifier
             .width(80.dp)
             .height(100.dp)
+            .padding(start = 8.dp, end = 8.dp)
     ) {
         GuitarStrings(isShowingFirstFret = showFirstFret)
         GuitarFrets(showFirstFret = showFirstFret)
