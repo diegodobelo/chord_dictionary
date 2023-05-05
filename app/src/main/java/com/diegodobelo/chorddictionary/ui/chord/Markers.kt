@@ -22,7 +22,7 @@ fun Note(
     fingerNumber: Int
 ) {
     Box {
-        Canvas(modifier = Modifier.size(14.dp), onDraw = {
+        Canvas(modifier = Modifier.size(12.dp), onDraw = {
             drawCircle(color = Color.Black)
         })
         Text(
