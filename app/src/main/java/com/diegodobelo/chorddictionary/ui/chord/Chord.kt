@@ -43,7 +43,7 @@ fun Chord() {
         ) {
             testChord.notes.forEach {
                 when(it) {
-                    is Barre -> TODO()
+                    is Barre -> HorizontallyPositionedBarre(barre = it)
                     is FingerNote -> HorizontallyPositionedNote(fingerNote = it)
                     EmptyNote -> Spacer(modifier = Modifier.height(12.dp))
                 }
@@ -68,6 +68,27 @@ private fun HorizontallyPositionedNote(
                 Spacer(modifier = Modifier)
             }
         }
+    }
+}
+
+@Composable
+private fun HorizontallyPositionedBarre(
+    barre: Barre,
+    stringsCount: Int = STRINGS_COUNT
+) {
+    val minWeight = 0.01f
+    val startSpaceWeight = stringsCount - barre.lastStringNumber + minWeight
+    val endSpaceWeight = (barre.firstStringNumber - 1) + minWeight
+    val barreSpaceWeight = barre.lastStringNumber - (barre.firstStringNumber - 1) + minWeight
+
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Spacer(modifier = Modifier.weight(startSpaceWeight))
+        Box(modifier = Modifier.weight(barreSpaceWeight)) {
+            BarreNote()
+        }
+        Spacer(modifier = Modifier.weight(endSpaceWeight))
     }
 }
 

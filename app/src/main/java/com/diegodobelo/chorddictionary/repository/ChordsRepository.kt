@@ -1,5 +1,6 @@
 package com.diegodobelo.chorddictionary.repository
 
+import com.diegodobelo.chorddictionary.models.Barre
 import com.diegodobelo.chorddictionary.models.BassMarker
 import com.diegodobelo.chorddictionary.models.ChordData
 import com.diegodobelo.chorddictionary.models.EmptyNote
@@ -20,12 +21,12 @@ class ChordsRepository {
                 NormalMarker
             ),
             notes = listOf(
+                Barre(4, 6),
                 FingerNote(2, 1),
                 FingerNote(4, 2),
                 FingerNote(5, 3),
                 EmptyNote,
                 EmptyNote,
-                EmptyNote
             )
         )
 
