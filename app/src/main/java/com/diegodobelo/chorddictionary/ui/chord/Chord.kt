@@ -20,6 +20,7 @@ import com.diegodobelo.chorddictionary.models.BassMarker
 import com.diegodobelo.chorddictionary.models.EmptyNote
 import com.diegodobelo.chorddictionary.models.FingerNote
 import com.diegodobelo.chorddictionary.models.MarkerType
+import com.diegodobelo.chorddictionary.models.MultipleFingerNotes
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
@@ -28,7 +29,7 @@ const val STRINGS_COUNT = 6
 
 @Composable
 fun Chord() {
-    val testChord = ChordsRepository.C_MAJOR_CHORD
+    val testChord = ChordsRepository.TEST_CHORD
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -44,28 +45,29 @@ fun Chord() {
             testChord.notes.forEach {
                 when(it) {
                     is Barre -> HorizontallyPositionedBarre(barre = it)
-                    is FingerNote -> HorizontallyPositionedNote(fingerNote = it)
+                    is FingerNote -> HorizontallyPositionedNotes(fingerNotes = listOf(it))
+                    is MultipleFingerNotes -> HorizontallyPositionedNotes(fingerNotes = it.notes)
                     EmptyNote -> Spacer(modifier = Modifier.height(12.dp))
                 }
             }
         }
     }
 }
-
 @Composable
-private fun HorizontallyPositionedNote(
-    fingerNote: FingerNote,
+private fun HorizontallyPositionedNotes(
+    fingerNotes: List<FingerNote>,
     stringsCount: Int = STRINGS_COUNT
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        repeat(stringsCount) { count ->
-            if (stringsCount - count == fingerNote.guitarStringNumber) {
+        (stringsCount downTo 1).forEach { currentStringNumber ->
+            val fingerNote = fingerNotes.firstOrNull { it.guitarStringNumber == currentStringNumber}
+            if (fingerNote != null) {
                 Note(fingerNumber = fingerNote.fingerNumber)
             } else {
-                Spacer(modifier = Modifier)
+                Spacer(modifier = Modifier.width(12.dp))
             }
         }
     }
