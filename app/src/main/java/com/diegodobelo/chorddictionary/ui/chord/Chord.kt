@@ -24,12 +24,19 @@ import com.diegodobelo.chorddictionary.models.MultipleFingerNotes
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
+import com.diegodobelo.chorddictionary.usecases.ChordType
+import com.diegodobelo.chorddictionary.usecases.CreateChordUseCase
 
 const val STRINGS_COUNT = 6
 
 @Composable
 fun Chord() {
-    val testChord = ChordsRepository.TEST_CHORD
+    val createChordUseCase = CreateChordUseCase()
+    val testChord = createChordUseCase(
+        baseStringNumber = CreateChordUseCase.FIFTH_STRING,
+        chordType = ChordType.Major,
+        extraNotes = emptyList()
+    )
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)

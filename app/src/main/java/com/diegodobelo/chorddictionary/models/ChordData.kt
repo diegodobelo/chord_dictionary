@@ -18,6 +18,11 @@ data class ChordData(
             return this
         }
 
+        fun addNotes(note: List<Note>): Builder {
+            notes.addAll(note)
+            return this
+        }
+
         fun build(): ChordData {
             return ChordData(
                 markers,
@@ -40,6 +45,9 @@ data class ChordData(
 //    }
 //}
 
+const val UNDEFINED_FINGER_NUMBER = -1
+const val DEFAULT_RELATIVE_FRET_NUMBER = 0
+
 sealed class Note
 
 object EmptyNote : Note()
@@ -49,7 +57,8 @@ data class Barre(
 ) : Note()
 data class FingerNote(
     val guitarStringNumber: Int,
-    val fingerNumber: Int
+    val relativeFretNumber: Int = DEFAULT_RELATIVE_FRET_NUMBER,
+    val fingerNumber: Int = UNDEFINED_FINGER_NUMBER
 ) : Note()
 
 data class MultipleFingerNotes(
