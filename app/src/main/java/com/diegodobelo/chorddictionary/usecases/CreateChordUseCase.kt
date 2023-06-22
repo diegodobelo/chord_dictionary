@@ -18,9 +18,10 @@ class CreateChordUseCase {
     ) : ChordData {
         val chordDataBuilder = ChordData.Builder()
         val baseNote = createFundamentalNote(baseStringNumber)
-        val majorThird = createMajorThird(baseStringNumber)
+        val majorThird = createMajorThirds(baseStringNumber)
+        val majorFifth = createMajorFifths(baseStringNumber)
         val allNotes = mutableListOf<Note>(baseNote).apply {
-            addAll(majorThird)
+            addAll(majorFifth)
         }
         val normalizedNotes = normalizeNotes(allNotes)
         val allFretsNotes = disposeNotesInFrets(normalizedNotes)
@@ -75,7 +76,7 @@ class CreateChordUseCase {
         baseStringNumber: Int
     ) = FingerNote(guitarStringNumber = baseStringNumber, relativeFretNumber = 0)
 
-    private fun createMajorThird(
+    private fun createMajorThirds(
         baseStringNumber: Int
     ): List<Note> {
         val notes = mutableListOf<Note>()
@@ -85,6 +86,20 @@ class CreateChordUseCase {
             FORTH_STRING -> notes.addAll(MAJOR_THIRDS_FOR_FORTH_STRING)
             THIRD_STRING -> notes.addAll(MAJOR_THIRDS_FOR_THIRD_STRING)
             SECOND_STRING -> notes.addAll(MAJOR_THIRDS_FOR_SECOND_STRING)
+        }
+        return notes
+    }
+
+    private fun createMajorFifths(
+        baseStringNumber: Int
+    ): List<Note> {
+        val notes = mutableListOf<Note>()
+        when (baseStringNumber) {
+            SIXTH_STRING -> notes.addAll(MAJOR_FIFTH_FOR_SIXTH_STRING)
+            FIFTH_STRING -> notes.addAll(MAJOR_FIFTH_FOR_FIFTH_STRING)
+            FORTH_STRING -> notes.addAll(MAJOR_FIFTH_FOR_FORTH_STRING)
+            THIRD_STRING -> notes.addAll(MAJOR_FIFTH_FOR_THIRD_STRING)
+            SECOND_STRING -> notes.addAll(MAJOR_FIFTH_FOR_SECOND_STRING)
         }
         return notes
     }
@@ -123,6 +138,36 @@ class CreateChordUseCase {
             FingerNote(guitarStringNumber = 6, relativeFretNumber = -1),
             FingerNote(guitarStringNumber = 4, relativeFretNumber = +1),
             FingerNote(guitarStringNumber = 1, relativeFretNumber = -1)
+        )
+
+
+        val MAJOR_FIFTH_FOR_SIXTH_STRING = listOf(
+            FingerNote(guitarStringNumber = 5, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 4, relativeFretNumber = -3),
+            FingerNote(guitarStringNumber = 2, relativeFretNumber = +0)
+        )
+        val MAJOR_FIFTH_FOR_FIFTH_STRING = listOf(
+            FingerNote(guitarStringNumber = 6, relativeFretNumber = +0),
+            FingerNote(guitarStringNumber = 4, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 3, relativeFretNumber = -3),
+            FingerNote(guitarStringNumber = 1, relativeFretNumber = +0)
+        )
+        val MAJOR_FIFTH_FOR_FORTH_STRING = listOf(
+            FingerNote(guitarStringNumber = 5, relativeFretNumber = +0),
+            FingerNote(guitarStringNumber = 3, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 2, relativeFretNumber = -2),
+        )
+        val MAJOR_FIFTH_FOR_THIRD_STRING = listOf(
+            FingerNote(guitarStringNumber = 6, relativeFretNumber = -2),
+            FingerNote(guitarStringNumber = 4, relativeFretNumber = +0),
+            FingerNote(guitarStringNumber = 2, relativeFretNumber = +3),
+            FingerNote(guitarStringNumber = 1, relativeFretNumber = -2)
+        )
+        val MAJOR_FIFTH_FOR_SECOND_STRING = listOf(
+            FingerNote(guitarStringNumber = 6, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 5, relativeFretNumber = -3),
+            FingerNote(guitarStringNumber = 3, relativeFretNumber = -1),
+            FingerNote(guitarStringNumber = 1, relativeFretNumber = +2)
         )
     }
 }
