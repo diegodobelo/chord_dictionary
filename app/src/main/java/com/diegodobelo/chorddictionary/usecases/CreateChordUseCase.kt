@@ -82,7 +82,9 @@ class CreateChordUseCase {
         when (baseStringNumber) {
             SIXTH_STRING -> notes.addAll(MAJOR_THIRDS_FOR_SIXTH_STRING)
             FIFTH_STRING -> notes.addAll(MAJOR_THIRDS_FOR_FIFTH_STRING)
-            FORTH_STRING -> notes.addAll(MAJOR_THIRDS_FOR_FIFTH_STRING)
+            FORTH_STRING -> notes.addAll(MAJOR_THIRDS_FOR_FORTH_STRING)
+            THIRD_STRING -> notes.addAll(MAJOR_THIRDS_FOR_THIRD_STRING)
+            SECOND_STRING -> notes.addAll(MAJOR_THIRDS_FOR_SECOND_STRING)
         }
         return notes
     }
@@ -93,6 +95,8 @@ class CreateChordUseCase {
         const val FIFTH_STRING = 5
         const val FORTH_STRING = 4
         const val THIRD_STRING = 3
+        const val SECOND_STRING = 2
+        // TODO: move this to repository
         val MAJOR_THIRDS_FOR_SIXTH_STRING = listOf(
             FingerNote(guitarStringNumber = 5, relativeFretNumber = -1),
             FingerNote(guitarStringNumber = 3, relativeFretNumber = +1),
@@ -105,8 +109,20 @@ class CreateChordUseCase {
             FingerNote(guitarStringNumber = 1, relativeFretNumber = -3)
         )
         val MAJOR_THIRDS_FOR_FORTH_STRING = listOf(
+            FingerNote(guitarStringNumber = 6, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 5, relativeFretNumber = -3),
             FingerNote(guitarStringNumber = 3, relativeFretNumber = -1),
             FingerNote(guitarStringNumber = 1, relativeFretNumber = +2)
+        )
+        val MAJOR_THIRDS_FOR_THIRD_STRING = listOf(
+            FingerNote(guitarStringNumber = 5, relativeFretNumber = +2),
+            FingerNote(guitarStringNumber = 4, relativeFretNumber = -3),
+            FingerNote(guitarStringNumber = 2, relativeFretNumber = +0)
+        )
+        val MAJOR_THIRDS_FOR_SECOND_STRING = listOf(
+            FingerNote(guitarStringNumber = 6, relativeFretNumber = -1),
+            FingerNote(guitarStringNumber = 4, relativeFretNumber = +1),
+            FingerNote(guitarStringNumber = 1, relativeFretNumber = -1)
         )
     }
 }

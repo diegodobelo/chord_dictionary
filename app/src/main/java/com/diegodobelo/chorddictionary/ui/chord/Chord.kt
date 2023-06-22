@@ -33,7 +33,7 @@ const val STRINGS_COUNT = 6
 fun Chord() {
     val createChordUseCase = CreateChordUseCase()
     val testChord = createChordUseCase(
-        baseStringNumber = CreateChordUseCase.FIFTH_STRING,
+        baseStringNumber = CreateChordUseCase.SECOND_STRING,
         chordType = ChordType.Major,
         extraNotes = emptyList()
     )
