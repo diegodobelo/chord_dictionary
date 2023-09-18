@@ -1,5 +1,7 @@
 package com.diegodobelo.chorddictionary.models
 
+import kotlin.math.abs
+
 data class ChordData(
     val markers: List<MarkerType>,
     val notes: List<Note>
@@ -23,47 +25,64 @@ data class ChordData(
             return this
         }
 
+        private fun shiftNotesLeft() {
+            notes.removeAt(0)
+            notes.add(EmptyNote)
+        }
+
+        private fun shiftNotesRight() {
+            notes.add(0, EmptyNote)
+            notes.removeLast()
+        }
+
+        fun shiftNotes(amount: Int): Builder {
+            if (amount > 0) {
+                repeat(amount) {
+                    shiftNotesRight()
+                }
+            }
+            if (amount < 0) {
+                repeat(abs(amount)) {
+                    shiftNotesLeft()
+                }
+            }
+            return this
+        }
+
         fun build(): ChordData {
             return ChordData(
                 markers,
                 notes
             )
         }
+
+        fun copyChord(chordData: ChordData): Builder {
+            notes.addAll(chordData.notes)
+            markers.addAll(chordData.markers)
+            return this
+        }
     }
 }
 
-//class FretBoard(
-//    val fretBoardNumber: Number
-//) {
-//    private val _notes: MutableList<Note> = mutableListOf()
-//    val notes: List<Note>
-//        get() {
-//            return _notes
-//        }
-//    fun addNote(note: Note) {
-//        _notes.add(note)
-//    }
-//}
-
 const val UNDEFINED_FINGER_NUMBER = -1
-const val DEFAULT_RELATIVE_FRET_NUMBER = 0
 
-sealed class Note
+sealed class Note(val isBaseNote: Boolean = false)
 
 object EmptyNote : Note()
 data class Barre(
     val firstStringNumber: Int = 1,
-    val lastStringNumber: Int = 6
-) : Note()
+    val lastStringNumber: Int = 6,
+    val baseNote: Boolean = false
+) : Note(baseNote)
 data class FingerNote(
     val guitarStringNumber: Int,
-    val relativeFretNumber: Int = DEFAULT_RELATIVE_FRET_NUMBER,
-    val fingerNumber: Int = UNDEFINED_FINGER_NUMBER
-) : Note()
+    val fingerNumber: Int = UNDEFINED_FINGER_NUMBER,
+    val baseNote: Boolean = false
+) : Note(baseNote)
 
 data class MultipleFingerNotes(
     val notes: List<FingerNote>
-) : Note()
+) : Note(notes.any { it.isBaseNote })
 
 
 sealed class MarkerType

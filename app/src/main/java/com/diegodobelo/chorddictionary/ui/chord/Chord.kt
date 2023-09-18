@@ -24,19 +24,20 @@ import com.diegodobelo.chorddictionary.models.MultipleFingerNotes
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
-import com.diegodobelo.chorddictionary.usecases.ChordType
-import com.diegodobelo.chorddictionary.usecases.CreateChordUseCase
+import com.diegodobelo.chorddictionary.usecases.PositionChordUseCase
 
 const val STRINGS_COUNT = 6
 
 @Composable
 fun Chord() {
-    val createChordUseCase = CreateChordUseCase()
-    val testChord = createChordUseCase(
-        baseStringNumber = CreateChordUseCase.SECOND_STRING,
-        chordType = ChordType.Major,
-        extraNotes = emptyList()
-    )
+//    val createChordUseCase = CreateChordUseCase()
+//    val testChord = createChordUseCase(
+//        baseStringNumber = CreateChordUseCase.SIXTH_STRING,
+//        chordType = ChordType.Major,
+//        extraNotes = emptyList()
+//    )
+    val positionChordUseCase = PositionChordUseCase()
+    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, 2)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
@@ -72,7 +73,9 @@ private fun HorizontallyPositionedNotes(
         (stringsCount downTo 1).forEach { currentStringNumber ->
             val fingerNote = fingerNotes.firstOrNull { it.guitarStringNumber == currentStringNumber}
             if (fingerNote != null) {
-                Note(fingerNumber = fingerNote.fingerNumber)
+                Note(
+                    fingerNumber = fingerNote.fingerNumber
+                )
             } else {
                 Spacer(modifier = Modifier.width(12.dp))
             }

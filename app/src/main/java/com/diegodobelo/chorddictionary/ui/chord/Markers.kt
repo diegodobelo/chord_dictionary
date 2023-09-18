@@ -23,11 +23,12 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Note(
-    fingerNumber: Int
+    fingerNumber: Int,
+    circleColor: Color = Color.Black
 ) {
     Box {
         Canvas(modifier = Modifier.size(12.dp), onDraw = {
-            drawCircle(color = Color.Black)
+            drawCircle(color = circleColor)
         })
         Text(
             text = fingerNumber.toString(),
