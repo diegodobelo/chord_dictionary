@@ -27,27 +27,22 @@ import com.diegodobelo.chorddictionary.repository.ChordsRepository
 import com.diegodobelo.chorddictionary.usecases.PositionChordUseCase
 
 const val STRINGS_COUNT = 6
+const val FRETS_COUNT = 6
 
 @Composable
 fun Chord() {
-//    val createChordUseCase = CreateChordUseCase()
-//    val testChord = createChordUseCase(
-//        baseStringNumber = CreateChordUseCase.SIXTH_STRING,
-//        chordType = ChordType.Major,
-//        extraNotes = emptyList()
-//    )
     val positionChordUseCase = PositionChordUseCase()
-    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, 2)
+    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, 4)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(IntrinsicSize.Max)
     ) {
-        NeckWithMarkers(markers = testChord.markers)
+        NeckWithMarkers(markers = testChord.markers, testChord.lastNotePosition())
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(start = 2.dp, top = 5.dp, end = 2.dp, bottom = 18.dp),
+                .padding(start = 10.dp, top = 5.dp, end = 2.dp, bottom = 18.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             testChord.notes.forEach {
@@ -106,20 +101,47 @@ private fun HorizontallyPositionedBarre(
 
 @Composable
 fun NeckWithMarkers(
-    markers: List<MarkerType>
+    markers: List<MarkerType>,
+    lastNotePosition: Int
 ) {
     Column(
-        modifier = Modifier.width(IntrinsicSize.Max)
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
     ) {
-        GuitarNeck()
+        Row {
+            FretPositionOnNeck(lastNotePosition, lastNotePosition + 1)
+            GuitarNeck()
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp),
+                .padding(start = 12.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             markers.forEach {
                 MarkerForType(markerType = it)
+            }
+        }
+    }
+}
+
+/**
+ * Show a number on the right side of the fretboard.
+ * @param fretNumber the vertical position where "fretPosition" will be shown. Starts at 0
+ * @param fretPosition the number (value) that will be shown on the right side of the fretboard
+ */
+@Composable
+fun FretPositionOnNeck(fretNumber: Int, fretPosition: Int) {
+    Column(
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
+            .padding(top = 4.dp)
+    ) {
+        repeat(FRETS_COUNT) { fret ->
+            if (fretNumber == fret) {
+                FretPosition(fretPosition)
+            } else {
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

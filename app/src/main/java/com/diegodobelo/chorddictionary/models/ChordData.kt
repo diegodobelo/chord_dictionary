@@ -6,6 +6,11 @@ data class ChordData(
     val markers: List<MarkerType>,
     val notes: List<Note>
 ) {
+
+    fun lastNotePosition(): Int {
+        return notes.indexOfLast { it !is EmptyNote }
+    }
+
     class Builder {
         private val markers: MutableList<MarkerType> = mutableListOf()
         private val notes: MutableList<Note> = mutableListOf()
