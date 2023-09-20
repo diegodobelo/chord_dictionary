@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.diegodobelo.chorddictionary.models.UNDEFINED_FINGER_NUMBER
 
 @Composable
 fun Note(
@@ -34,7 +35,11 @@ fun Note(
             drawCircle(color = circleColor)
         })
         Text(
-            text = fingerNumber.toString(),
+            text = if (fingerNumber != UNDEFINED_FINGER_NUMBER) {
+                fingerNumber.toString()
+            } else {
+                ""
+            },
             modifier = Modifier
                 .align(Alignment.Center),
             color = Color.White,

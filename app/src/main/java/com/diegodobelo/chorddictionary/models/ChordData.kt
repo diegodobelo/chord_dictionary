@@ -86,7 +86,7 @@ data class FingerNote(
 ) : Note(baseNote)
 
 data class MultipleFingerNotes(
-    val notes: List<FingerNote>
+    var notes: List<FingerNote>
 ) : Note(notes.any { it.isBaseNote })
 
 
