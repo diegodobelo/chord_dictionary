@@ -32,7 +32,7 @@ const val FRETS_COUNT = 6
 @Composable
 fun Chord() {
     val positionChordUseCase = PositionChordUseCase()
-    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_5, 0)
+    val testChord = positionChordUseCase(ChordsRepository.MINOR_TEMPLATE_4, 0)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
