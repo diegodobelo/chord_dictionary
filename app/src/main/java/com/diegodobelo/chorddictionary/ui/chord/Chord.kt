@@ -18,12 +18,14 @@ import androidx.compose.ui.unit.dp
 import com.diegodobelo.chorddictionary.models.Barre
 import com.diegodobelo.chorddictionary.models.BassMarker
 import com.diegodobelo.chorddictionary.models.EmptyNote
-import com.diegodobelo.chorddictionary.models.FingerNote
+import com.diegodobelo.chorddictionary.models.NoteOnString
 import com.diegodobelo.chorddictionary.models.MarkerType
-import com.diegodobelo.chorddictionary.models.MultipleFingerNotes
+import com.diegodobelo.chorddictionary.models.NotesOnFret
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
+import com.diegodobelo.chorddictionary.models.stringsTune
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
+import com.diegodobelo.chorddictionary.usecases.GetNoteFretUseCase
 import com.diegodobelo.chorddictionary.usecases.PositionChordUseCase
 
 const val STRINGS_COUNT = 6
@@ -32,13 +34,16 @@ const val FRETS_COUNT = 6
 @Composable
 fun Chord() {
     val positionChordUseCase = PositionChordUseCase()
-    val testChord = positionChordUseCase(ChordsRepository.MINOR_TEMPLATE_4, 0)
+    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, 0)
+
+    val fretPositionUseCase = GetNoteFretUseCase()
+    val fretPos = fretPositionUseCase("C", 5, stringsTune)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(IntrinsicSize.Max)
     ) {
-        NeckWithMarkers(markers = testChord.markers, testChord.lastNotePosition())
+        NeckWithMarkers(markers = testChord.markers, fretPos)
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -48,8 +53,8 @@ fun Chord() {
             testChord.notes.forEach {
                 when(it) {
                     is Barre -> HorizontallyPositionedBarre(barre = it)
-                    is FingerNote -> HorizontallyPositionedNotes(fingerNotes = listOf(it))
-                    is MultipleFingerNotes -> HorizontallyPositionedNotes(fingerNotes = it.notes)
+                    is NoteOnString -> HorizontallyPositionedNotes(noteOnStrings = listOf(it))
+                    is NotesOnFret -> HorizontallyPositionedNotes(noteOnStrings = it.notes)
                     EmptyNote -> Spacer(modifier = Modifier.height(12.dp))
                 }
             }
@@ -58,7 +63,7 @@ fun Chord() {
 }
 @Composable
 private fun HorizontallyPositionedNotes(
-    fingerNotes: List<FingerNote>,
+    noteOnStrings: List<NoteOnString>,
     stringsCount: Int = STRINGS_COUNT
 ) {
     Row(
@@ -66,7 +71,7 @@ private fun HorizontallyPositionedNotes(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         (stringsCount downTo 1).forEach { currentStringNumber ->
-            val fingerNote = fingerNotes.firstOrNull { it.guitarStringNumber == currentStringNumber}
+            val fingerNote = noteOnStrings.firstOrNull { it.guitarStringNumber == currentStringNumber}
             if (fingerNote != null) {
                 Note(
                     fingerNumber = fingerNote.fingerNumber

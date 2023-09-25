@@ -71,6 +71,38 @@ data class ChordData(
 
 const val UNDEFINED_FINGER_NUMBER = -1
 
+// TODO: move to repository
+const val amountOfNotes = 12
+val notesSymbols = mapOf(
+    "C"  to 1,
+    "C#" to 2,
+    "D♭" to 2,
+    "D"  to 3,
+    "D#" to 4,
+    "E♭" to 4,
+    "E"  to 5,
+    "F♭" to 5,
+    "F"  to 6,
+    "F#" to 7,
+    "G♭" to 7,
+    "G"  to 8,
+    "G#" to 9,
+    "A♭" to 9,
+    "A"  to 10,
+    "A#" to 11,
+    "B♭" to 11,
+    "B"  to 12
+)
+
+val stringsTune = mapOf(
+    1 to "E",
+    2 to "B",
+    3 to "G",
+    4 to "D",
+    5 to "A",
+    6 to "E"
+)
+
 sealed class Note(val isBaseNote: Boolean = false)
 
 object EmptyNote : Note()
@@ -79,16 +111,15 @@ data class Barre(
     val lastStringNumber: Int = 6,
     val baseNote: Boolean = false
 ) : Note(baseNote)
-data class FingerNote(
+data class NoteOnString(
     val guitarStringNumber: Int,
     val fingerNumber: Int = UNDEFINED_FINGER_NUMBER,
     val baseNote: Boolean = false
 ) : Note(baseNote)
 
-data class MultipleFingerNotes(
-    var notes: List<FingerNote>
+data class NotesOnFret(
+    var notes: List<NoteOnString>
 ) : Note(notes.any { it.isBaseNote })
-
 
 sealed class MarkerType
 object BassMarker : MarkerType()

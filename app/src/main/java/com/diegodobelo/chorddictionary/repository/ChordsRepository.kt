@@ -4,11 +4,10 @@ import com.diegodobelo.chorddictionary.models.Barre
 import com.diegodobelo.chorddictionary.models.BassMarker
 import com.diegodobelo.chorddictionary.models.ChordData
 import com.diegodobelo.chorddictionary.models.EmptyNote
-import com.diegodobelo.chorddictionary.models.FingerNote
-import com.diegodobelo.chorddictionary.models.MultipleFingerNotes
+import com.diegodobelo.chorddictionary.models.NoteOnString
+import com.diegodobelo.chorddictionary.models.NotesOnFret
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
-import com.diegodobelo.chorddictionary.models.Note
 
 class ChordsRepository {
     companion object {
@@ -26,9 +25,9 @@ class ChordsRepository {
             ),
             notes = listOf(
                 Barre(1, 5),
-                FingerNote(2),
-                FingerNote(4),
-                FingerNote(5, baseNote = true),
+                NoteOnString(2),
+                NoteOnString(4),
+                NoteOnString(5, baseNote = true),
                 EmptyNote,
                 EmptyNote
             )
@@ -47,11 +46,11 @@ class ChordsRepository {
             notes = listOf(
                 Barre(1, 5, true),
                 EmptyNote,
-                MultipleFingerNotes(
+                NotesOnFret(
                     listOf(
-                        FingerNote(2),
-                        FingerNote(3),
-                        FingerNote(4)
+                        NoteOnString(2),
+                        NoteOnString(3),
+                        NoteOnString(4)
                     )
                 ),
                 EmptyNote,
@@ -73,11 +72,11 @@ class ChordsRepository {
             notes = listOf(
                 Barre(1, 6, true),
                 EmptyNote,
-                FingerNote(5),
-                MultipleFingerNotes(
+                NoteOnString(5),
+                NotesOnFret(
                     listOf(
-                        FingerNote(1, baseNote = true),
-                        FingerNote(6),
+                        NoteOnString(1, baseNote = true),
+                        NoteOnString(6),
                     )
                 ),
                 EmptyNote,
@@ -97,11 +96,11 @@ class ChordsRepository {
             ),
             notes = listOf(
                 Barre(1, 6, true),
-                FingerNote(3),
-                MultipleFingerNotes(
+                NoteOnString(3),
+                NotesOnFret(
                     listOf(
-                        FingerNote(4),
-                        FingerNote(5),
+                        NoteOnString(4),
+                        NoteOnString(5),
                     )
                 ),
                 EmptyNote,
@@ -123,13 +122,13 @@ class ChordsRepository {
             notes = listOf(
                 Barre(1, 4, true),
                 EmptyNote,
-                MultipleFingerNotes(
+                NotesOnFret(
                     listOf(
-                        FingerNote(1),
-                        FingerNote(3),
+                        NoteOnString(1),
+                        NoteOnString(3),
                     )
                 ),
-                FingerNote(2),
+                NoteOnString(2),
                 EmptyNote,
                 EmptyNote
             )
@@ -149,14 +148,14 @@ class ChordsRepository {
             ),
             notes = listOf(
                 Barre(1, 5),
-                MultipleFingerNotes(
+                NotesOnFret(
                     listOf(
-                        FingerNote(2),
-                        FingerNote(4),
+                        NoteOnString(2),
+                        NoteOnString(4),
                     )
                 ),
                 EmptyNote,
-                FingerNote(5, baseNote = true),
+                NoteOnString(5, baseNote = true),
                 EmptyNote,
                 EmptyNote
             )
@@ -174,11 +173,11 @@ class ChordsRepository {
             ),
             notes = listOf(
                 Barre(1, 5, true),
-                FingerNote(2),
-                MultipleFingerNotes(
+                NoteOnString(2),
+                NotesOnFret(
                     listOf(
-                        FingerNote(3),
-                        FingerNote(4)
+                        NoteOnString(3),
+                        NoteOnString(4)
                     )
                 ),
                 EmptyNote,
@@ -200,10 +199,10 @@ class ChordsRepository {
             notes = listOf(
                 Barre(1, 6, true),
                 EmptyNote,
-                MultipleFingerNotes(
+                NotesOnFret(
                     listOf(
-                        FingerNote(4),
-                        FingerNote(5),
+                        NoteOnString(4),
+                        NoteOnString(5),
                     )
                 ),
                 EmptyNote,
@@ -224,9 +223,9 @@ class ChordsRepository {
             ),
             notes = listOf(
                 Barre(1, 4, true),
-                FingerNote(1),
-                FingerNote(3),
-                FingerNote(2),
+                NoteOnString(1),
+                NoteOnString(3),
+                NoteOnString(2),
                 EmptyNote,
                 EmptyNote
             )
