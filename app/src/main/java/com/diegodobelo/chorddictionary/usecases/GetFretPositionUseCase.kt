@@ -4,7 +4,7 @@ import com.diegodobelo.chorddictionary.models.amountOfNotes
 import com.diegodobelo.chorddictionary.models.notesSymbols
 
 // TODO: add HILT and inject repository, then get notesSymbols and stringsTune from repository
-class GetNoteFretUseCase {
+class GetFretPositionUseCase {
 
     operator fun invoke(noteSymbol: String, noteString: Int, stringsTune: Map<Int, String>): Int {
 
@@ -16,6 +16,6 @@ class GetNoteFretUseCase {
             notePos + amountOfNotes
         } else {
             notePos
-        }
+        } - 1 // Make it 0 based
     }
 }

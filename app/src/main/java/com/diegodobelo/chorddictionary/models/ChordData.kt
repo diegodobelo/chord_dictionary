@@ -11,6 +11,10 @@ data class ChordData(
         return notes.indexOfLast { it !is EmptyNote }
     }
 
+    fun baseNotePosition(): Int {
+        return notes.indexOfLast { it.isBaseNote }
+    }
+
     class Builder {
         private val markers: MutableList<MarkerType> = mutableListOf()
         private val notes: MutableList<Note> = mutableListOf()
@@ -74,24 +78,24 @@ const val UNDEFINED_FINGER_NUMBER = -1
 // TODO: move to repository
 const val amountOfNotes = 12
 val notesSymbols = mapOf(
-    "C"  to 1,
-    "C#" to 2,
-    "D♭" to 2,
-    "D"  to 3,
-    "D#" to 4,
-    "E♭" to 4,
-    "E"  to 5,
-    "F♭" to 5,
-    "F"  to 6,
-    "F#" to 7,
-    "G♭" to 7,
-    "G"  to 8,
-    "G#" to 9,
-    "A♭" to 9,
-    "A"  to 10,
-    "A#" to 11,
-    "B♭" to 11,
-    "B"  to 12
+    "C"  to 0,
+    "C#" to 1,
+    "D♭" to 1,
+    "D"  to 2,
+    "D#" to 3,
+    "E♭" to 3,
+    "E"  to 4,
+    "F♭" to 4,
+    "F"  to 5,
+    "F#" to 6,
+    "G♭" to 6,
+    "G"  to 7,
+    "G#" to 8,
+    "A♭" to 8,
+    "A"  to 9,
+    "A#" to 10,
+    "B♭" to 10,
+    "B"  to 11
 )
 
 val stringsTune = mapOf(

@@ -25,7 +25,7 @@ import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
 import com.diegodobelo.chorddictionary.models.stringsTune
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
-import com.diegodobelo.chorddictionary.usecases.GetNoteFretUseCase
+import com.diegodobelo.chorddictionary.usecases.GetFretPositionUseCase
 import com.diegodobelo.chorddictionary.usecases.PositionChordUseCase
 
 const val STRINGS_COUNT = 6
@@ -33,11 +33,11 @@ const val FRETS_COUNT = 6
 
 @Composable
 fun Chord() {
-    val positionChordUseCase = PositionChordUseCase()
-    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, 0)
+    val fretPositionUseCase = GetFretPositionUseCase()
+    val fretPos = fretPositionUseCase("C#", 5, stringsTune)
 
-    val fretPositionUseCase = GetNoteFretUseCase()
-    val fretPos = fretPositionUseCase("C", 5, stringsTune)
+    val positionChordUseCase = PositionChordUseCase()
+    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, fretPos)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
