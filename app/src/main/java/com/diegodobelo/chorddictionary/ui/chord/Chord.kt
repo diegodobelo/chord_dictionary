@@ -19,34 +19,24 @@ import com.diegodobelo.chorddictionary.models.Barre
 import com.diegodobelo.chorddictionary.models.BassMarker
 import com.diegodobelo.chorddictionary.models.ChordData
 import com.diegodobelo.chorddictionary.models.EmptyNote
-import com.diegodobelo.chorddictionary.models.NoteOnString
 import com.diegodobelo.chorddictionary.models.MarkerType
-import com.diegodobelo.chorddictionary.models.NotesOnFret
 import com.diegodobelo.chorddictionary.models.MuteMarker
 import com.diegodobelo.chorddictionary.models.NormalMarker
-import com.diegodobelo.chorddictionary.models.stringsTune
-import com.diegodobelo.chorddictionary.repository.ChordsRepository
-import com.diegodobelo.chorddictionary.usecases.GetFretPositionUseCase
-import com.diegodobelo.chorddictionary.usecases.PositionChordUseCase
+import com.diegodobelo.chorddictionary.models.NoteOnString
+import com.diegodobelo.chorddictionary.models.NotesOnFret
+import com.diegodobelo.chorddictionary.templates.MajorTemplates
 
 const val STRINGS_COUNT = 6
 const val FRETS_COUNT = 6
 
 @Composable
-fun Chord(chordTemplate: ChordData, tune: String, visibleFrets: Int) {
-    val fretPositionUseCase = GetFretPositionUseCase()
-    // TODO: get noteString from template
-    // TODO: get stringsTune as param
-    val fretPos = fretPositionUseCase(tune, 5, stringsTune)
-
-    val positionChordUseCase = PositionChordUseCase()
-    val chordData = positionChordUseCase(chordTemplate, fretPos)
+fun Chord(chordData: ChordData, visibleFrets: Int) {
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(IntrinsicSize.Max)
     ) {
-        NeckWithMarkers(markers = chordData.markers, fretPos, visibleFrets)
+        NeckWithMarkers(markers = chordData.markers, chordData.fretPosition, visibleFrets)
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -171,5 +161,5 @@ fun MarkerForType(
 @Preview(showBackground = true)
 @Composable
 fun NeckWithMarkersPreview() {
-    Chord(ChordsRepository.MAJOR_TEMPLATE_1, "G", 6)
+    Chord(MajorTemplates.MAJOR_TEMPLATE_1, 6)
 }

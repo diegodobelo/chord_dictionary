@@ -5,7 +5,7 @@ import kotlin.math.abs
 data class ChordData(
     val markers: List<MarkerType>,
     val notes: List<Note>,
-    val hasOverflownFrets: Boolean = false
+    val fretPosition: Int = -1
 ) {
 
     fun lastNotePosition(): Int {
@@ -16,11 +16,18 @@ data class ChordData(
         return notes.indexOfLast { it.isBaseNote }
     }
 
+    fun getGuitarStringOfBaseNote(): Int {
+        val baseNote = notes.last { it.isBaseNote }
+        val baseFingerNote = baseNote as? NoteOnString
+        val barreNote = baseNote as? Barre
+        return baseFingerNote?.guitarStringNumber ?: barreNote?.lastStringNumber ?: -1
+    }
+
     class Builder {
         private val markers: MutableList<MarkerType> = mutableListOf()
         private val notes: MutableList<Note> = mutableListOf()
 
-        var hasOverflownFrets = false
+        private var fretPos = -1
 
         fun addMarker(markerType: MarkerType): Builder {
             markers.add(markerType)
@@ -37,15 +44,18 @@ data class ChordData(
             return this
         }
 
+        fun setFretPosition(fretPosition: Int): Builder {
+            fretPos = fretPosition
+            return this
+        }
+
         private fun shiftNotesLeft() {
             notes.removeAt(0)
             notes.add(EmptyNote)
         }
 
         private fun shiftNotesRight() {
-            if (notes.last() !is EmptyNote) {
-                hasOverflownFrets = true
-            } else {
+            if (notes.last() is EmptyNote) {
                 notes.add(0, EmptyNote)
                 notes.removeLast()
             }
@@ -68,7 +78,8 @@ data class ChordData(
         fun build(): ChordData {
             return ChordData(
                 markers,
-                notes
+                notes,
+                fretPos
             )
         }
 
@@ -103,15 +114,6 @@ val notesSymbols = mapOf(
     "A#" to 10,
     "B♭" to 10,
     "B"  to 11
-)
-
-val stringsTune = mapOf(
-    1 to "E",
-    2 to "B",
-    3 to "G",
-    4 to "D",
-    5 to "A",
-    6 to "E"
 )
 
 sealed class Note(val isBaseNote: Boolean = false)

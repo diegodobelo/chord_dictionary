@@ -11,10 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diegodobelo.chorddictionary.repository.ChordsRepository
+import com.diegodobelo.chorddictionary.templates.MajorTemplates
 import com.diegodobelo.chorddictionary.ui.chord.Chord
 import com.diegodobelo.chorddictionary.ui.theme.ChordDictionaryTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var chordsRepository: ChordsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,7 +32,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.padding(8.dp)
                 ) {
                     // TODO: check why >A doesn't work
-                    Chord(ChordsRepository.MAJOR_TEMPLATE_1, "G#", 5)
+                    // TODO: also get visible frets from repository
+                    val chorData = chordsRepository.getMajorChordsForTune(
+                        "F",
+                        MajorTemplates.MAJOR_TEMPLATE_1
+                    )
+                    // TODO: make visibleFrets base 1, or change the name to lastVisibleFretIndex,
+                    // TODO: also, get it from repository
+                    Chord(
+                        chordData = chorData,
+                        visibleFrets = 5
+                    )
                 }
             }
         }
@@ -36,6 +53,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     ChordDictionaryTheme {
-        Chord(ChordsRepository.MAJOR_TEMPLATE_1, "A", 6)
+        Chord(MajorTemplates.MAJOR_TEMPLATE_1,6)
     }
 }
