@@ -4,7 +4,8 @@ import kotlin.math.abs
 
 data class ChordData(
     val markers: List<MarkerType>,
-    val notes: List<Note>
+    val notes: List<Note>,
+    val hasOverflownFrets: Boolean = false
 ) {
 
     fun lastNotePosition(): Int {
@@ -18,6 +19,8 @@ data class ChordData(
     class Builder {
         private val markers: MutableList<MarkerType> = mutableListOf()
         private val notes: MutableList<Note> = mutableListOf()
+
+        var hasOverflownFrets = false
 
         fun addMarker(markerType: MarkerType): Builder {
             markers.add(markerType)
@@ -40,8 +43,12 @@ data class ChordData(
         }
 
         private fun shiftNotesRight() {
-            notes.add(0, EmptyNote)
-            notes.removeLast()
+            if (notes.last() !is EmptyNote) {
+                hasOverflownFrets = true
+            } else {
+                notes.add(0, EmptyNote)
+                notes.removeLast()
+            }
         }
 
         fun shiftNotes(amount: Int): Builder {

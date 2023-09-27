@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.diegodobelo.chorddictionary.repository.ChordsRepository
 import com.diegodobelo.chorddictionary.ui.chord.Chord
 import com.diegodobelo.chorddictionary.ui.theme.ChordDictionaryTheme
 
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                     modifier = Modifier.padding(8.dp)
                 ) {
-                    Chord()
+                    // TODO: check why >A doesn't work
+                    Chord(ChordsRepository.MAJOR_TEMPLATE_1, "G#", 5)
                 }
             }
         }
@@ -34,6 +36,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     ChordDictionaryTheme {
-        Chord()
+        Chord(ChordsRepository.MAJOR_TEMPLATE_1, "A", 6)
     }
 }

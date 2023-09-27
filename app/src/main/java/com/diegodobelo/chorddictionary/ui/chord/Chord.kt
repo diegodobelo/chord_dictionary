@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diegodobelo.chorddictionary.models.Barre
 import com.diegodobelo.chorddictionary.models.BassMarker
+import com.diegodobelo.chorddictionary.models.ChordData
 import com.diegodobelo.chorddictionary.models.EmptyNote
 import com.diegodobelo.chorddictionary.models.NoteOnString
 import com.diegodobelo.chorddictionary.models.MarkerType
@@ -32,25 +33,27 @@ const val STRINGS_COUNT = 6
 const val FRETS_COUNT = 6
 
 @Composable
-fun Chord() {
+fun Chord(chordTemplate: ChordData, tune: String, visibleFrets: Int) {
     val fretPositionUseCase = GetFretPositionUseCase()
-    val fretPos = fretPositionUseCase("C#", 5, stringsTune)
+    // TODO: get noteString from template
+    // TODO: get stringsTune as param
+    val fretPos = fretPositionUseCase(tune, 5, stringsTune)
 
     val positionChordUseCase = PositionChordUseCase()
-    val testChord = positionChordUseCase(ChordsRepository.MAJOR_TEMPLATE_1, fretPos)
+    val chordData = positionChordUseCase(chordTemplate, fretPos)
     Box(
         modifier = Modifier
             .width(IntrinsicSize.Max)
             .height(IntrinsicSize.Max)
     ) {
-        NeckWithMarkers(markers = testChord.markers, fretPos)
+        NeckWithMarkers(markers = chordData.markers, fretPos, visibleFrets)
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(start = 10.dp, top = 5.dp, end = 2.dp, bottom = 18.dp),
+                .padding(start = 18.dp, top = 5.dp, end = 2.dp, bottom = 18.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            testChord.notes.forEach {
+            chordData.notes.forEach {
                 when(it) {
                     is Barre -> HorizontallyPositionedBarre(barre = it)
                     is NoteOnString -> HorizontallyPositionedNotes(noteOnStrings = listOf(it))
@@ -107,20 +110,22 @@ private fun HorizontallyPositionedBarre(
 @Composable
 fun NeckWithMarkers(
     markers: List<MarkerType>,
-    lastNotePosition: Int
+    lastNotePosition: Int,
+    visibleFrets: Int
 ) {
+    val fretNumber = if (lastNotePosition > visibleFrets) visibleFrets else lastNotePosition
     Column(
         modifier = Modifier
             .width(IntrinsicSize.Max)
     ) {
         Row {
-            FretPositionOnNeck(lastNotePosition, lastNotePosition + 1)
+            FretPositionOnNeck(fretNumber, lastNotePosition + 1)
             GuitarNeck()
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
+                .padding(start = 20.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             markers.forEach {
@@ -166,5 +171,5 @@ fun MarkerForType(
 @Preview(showBackground = true)
 @Composable
 fun NeckWithMarkersPreview() {
-    Chord()
+    Chord(ChordsRepository.MAJOR_TEMPLATE_1, "G", 6)
 }

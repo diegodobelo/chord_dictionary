@@ -107,6 +107,7 @@ fun UnplayableStringMarker() {
 fun FretPosition(fretPosition: Int) {
     Text(
         text = fretPosition.toString(),
+        modifier = Modifier.width(16.dp),
         color = Color.Black,
         style = LocalTextStyle.current.merge(
             TextStyle(
@@ -115,7 +116,7 @@ fun FretPosition(fretPosition: Int) {
                 ),
             )
         ),
-        fontSize = 14.sp,
+        fontSize = 12.sp,
     )
 }
 
